@@ -3,6 +3,7 @@ import { deployments, ethers, getNamedAccounts } from "hardhat";
 import { assert, expect } from "chai";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber } from "ethers";
+import { id } from "ethers/lib/utils";
 
 describe("Raffle", async () => {
   let Raffle: Raffle;
@@ -33,14 +34,17 @@ describe("Raffle", async () => {
   });
 
   describe("enterRaffle", async () => {
-
     it("should revert when user enterRaffle les than current entranceFee", async () => {
       await expect(Raffle.enterRaffle({ value: ethers.utils.parseEther("0.1") })).to.be.revertedWithCustomError(
         Raffle,
         "NotEnoughEther"
       );
     });
+  });
 
-
+  describe("getEntranceFree", async () => {
+    it("should return the current entranceFee", async () => {
+      assert.equal((await Raffle.getEntranceFree()).toBigInt, entranceFee.toBigInt);
+    });
   });
 });
