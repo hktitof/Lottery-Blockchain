@@ -1,4 +1,6 @@
-import "@nomiclabs/hardhat-waffle";
+
+import { HardhatUserConfig } from "hardhat/config";
+
 import "@nomiclabs/hardhat-etherscan";
 import "hardhat-deploy";
 import "solidity-coverage";
@@ -8,7 +10,8 @@ import dotenv from "dotenv";
 dotenv.config();
 import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-toolbox";
-
+import "@nomicfoundation/hardhat-chai-matchers";
+import "@nomiclabs/hardhat-ethers";
 
 
 
@@ -27,10 +30,12 @@ const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 
 
 /** @type import('hardhat/config').HardhatUserConfig */
-module.exports = {
+const config: HardhatUserConfig = {
+    // ? if you don't specify defaultNetwork it's by the default "hardhat" => defaultNetwork: "hardhat"
+
   solidity: {
     compilers: [
-      { version: "^0.8.8", settings: {} },
+      { version: "0.8.8", settings: {} },
       { version: "0.6.6", settings: {} },
     ],
   },
@@ -83,3 +88,5 @@ module.exports = {
     },
   },
 };
+
+export default config;
