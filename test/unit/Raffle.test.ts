@@ -37,9 +37,13 @@ describe("Raffle", async () => {
     it("should revert when user enterRaffle les than current entranceFee", async () => {
       await expect(Raffle.enterRaffle({ value: ethers.utils.parseEther("0.1") })).to.be.revertedWithCustomError(
         Raffle,
-        "NotEnoughEther"
+        "Raffle__NotEnoughEtherEnetered"
       );
     });
+    // it("it should store the sender of enterRaffle", async () => {
+    //     await Raffle.enterRaffle({ value: entranceFee });
+    //     const players = await Raffle.getPlayer(deployer.address);
+    //   })
   });
 
   describe("getEntranceFree", async () => {
@@ -47,4 +51,5 @@ describe("Raffle", async () => {
       assert.equal((await Raffle.getEntranceFree()).toBigInt, entranceFee.toBigInt);
     });
   });
+
 });
