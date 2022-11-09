@@ -26,7 +26,7 @@ export interface networkConfigItem {
     },
     // if it's goerli Network use this address "0xF9680D99D6C9589e2a93a78A04A279e509205945"
     goerli: {
-      ethUsdPriceFeed: "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e",
+      ethUsdPriceFeed: "0x2ca8e0c643bde4c2e08ab1fa0da3401adad7734d",
       blockConfirmations: 6,
     },
     

@@ -70,7 +70,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
     /// @notice Explain to an end user what this does
     /// @dev Explain to a developer any extra details
     constructor(
-        address vrfCoordinatorAddressV2,
+        address vrfCoordinatorAddressV2, // The address of the VRF Coordinator
         uint256 entranceFee,
         bytes32 gasLane,
         uint64 subscriptionId,

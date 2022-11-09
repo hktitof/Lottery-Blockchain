@@ -30,7 +30,7 @@ const deployRaffle: DeployFunction = async function (
     args: [entranceFee],
     log: true,
     // we need to wait if on a live network so we can verify properly
-    waitConfirmations: networkConfig[network.name].blockConfirmations || 0,
+    waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   })
   log(`Raffle deployed at ${Raffle.address}`)
 //   if (
