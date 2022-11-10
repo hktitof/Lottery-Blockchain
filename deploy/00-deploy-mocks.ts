@@ -36,4 +36,4 @@ const deployMocks: DeployFunction = async function (hre: HardhatRuntimeEnvironme
   }
 };
 export default deployMocks;
-deployMocks.tags = ["raffle", "mocks"];
+deployMocks.tags = ["all","raffle", "mocks"];

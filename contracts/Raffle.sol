@@ -23,12 +23,11 @@ error Raffle__UpkeepNotNeeded(
     uint256 raffleState
 );
 
-
 /** @title A sample Raffle contract
-*   @author Abdellatif Anaflous
-*   @notice This contract is for creating an untaperable decentralized smart contract raffle
-*   @dev This implements Chainlink VRF v2 & chainlink Keepers
-*/
+ *   @author Abdellatif Anaflous
+ *   @notice This contract is for creating an untaperable decentralized smart contract raffle
+ *   @dev This implements Chainlink VRF v2 & chainlink Keepers
+ */
 contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
     /* Type decalrations */
     enum RaffleState {
@@ -65,17 +64,18 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
     event ReqeustedRaffleWinner(uint256 indexed requestId); // track Raffle winner requester
     event RaffleWinnerSelected(address indexed winner); // track Winner List
 
-    /*Function*/// @title A title that should describe the contract/interface
+    /*Function*/
+    // @title A title that should describe the contract/interface
     /// @author The name of the author
     /// @notice Explain to an end user what this does
     /// @dev Explain to a developer any extra details
     constructor(
         address vrfCoordinatorAddressV2, // The address of the VRF Coordinator
-        uint256 entranceFee,
-        bytes32 gasLane,
         uint64 subscriptionId,
-        uint32 callBackGasLimit,
-        uint256 interval
+        bytes32 gasLane,
+        uint256 interval,
+        uint256 entranceFee,
+        uint32 callBackGasLimit
     ) VRFConsumerBaseV2(vrfCoordinatorAddressV2) {
         i_entranceFee = entranceFee;
         i_vrfCoordinator = VRFCoordinatorV2Interface(vrfCoordinatorAddressV2);
@@ -175,7 +175,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
         s_recentWinnerAddress = recentWinnerAddress;
         s_raffleState = RaffleState.OPEN;
         s_players = new address payable[](0); // reset the players array to empty
-        s_lastTimeStamp = block.timestamp;// reset the last time stamp to the current time
+        s_lastTimeStamp = block.timestamp; // reset the last time stamp to the current time
         (bool success, ) = s_recentWinnerAddress.call{
             value: address(this).balance
         }(""); // transfer the prize "contract balance" to the winner
@@ -199,7 +199,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
         return s_recentWinnerAddress;
     }
 
-    function getRaffleSTate() public view returns(RaffleState) {
+    function getRaffleState() public view returns (RaffleState) {
         return s_raffleState;
     }
 
@@ -217,5 +217,9 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
 
     function getRequestConfirmations() public pure returns (uint256) {
         return REQUEST_CONFIRMATIONS;
+    }
+
+    function getInterval() public view returns (uint256) {
+        return i_interval;
     }
 }
