@@ -4,6 +4,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Address, DeployFunction } from "hardhat-deploy/types";
 // import verify from "../utils/verify"
 import { networkConfig, developmentChains } from "../helper-hardhat-config";
+import verify from "../utils/verify"
 
 const deployRaffle: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // @ts-ignore
@@ -46,8 +47,13 @@ const deployRaffle: DeployFunction = async function (hre: HardhatRuntimeEnvironm
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   });
   log(`Successfully deployed "Raffle" contract at ${Raffle.address}`);
-  log("verifying contract...")
-  
+  if (
+    !developmentChains.includes(network.name) &&
+    process.env.ETHERSCAN_API_KEY
+  ) {
+    await verify(Raffle.address, args)
+  }
+  log("----------------------------------------------------");
 };
 export default deployRaffle;
 deployRaffle.tags = ["Raffle"];
