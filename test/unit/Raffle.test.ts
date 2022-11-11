@@ -17,13 +17,21 @@ import { assert, expect } from "chai";// chai is an assertion library
 "Raffle", async ()=>{
   let raffle: Raffle;
   let vrfCoordinatorV2Mock:VRFCoordinatorV2Mock;
-  
+  let raffleEntranceFee;BigNumber;
+  let deployer:SignerWithAddress;
+  let interval:BigNumber;
 
   beforeEach(async()=>{
-    const {deployer} = await getNamedAccounts();// get deployer address
+    const accounts = await ethers.getSigners();
+    deployer = accounts[0];// get deployer address
     await deployments.fixture("all");// deploy all "deploy/.." that has prefix "all"
     raffle = await ethers.getContract("Raffle",deployer);// get most recent recently deployed contract "Raffle"
     vrfCoordinatorV2Mock=await ethers.getContract("VRFCoordinatorV2Mock",deployer);// get most recent recently deployed contract "vrfCoordinatorV2Mock"
+    const subscriptionId=raffle.getSubscriptionId();
+    await vrfCoordinatorV2Mock.addConsumer(subscriptionId,raffle.address);
+    raffleEntranceFee=await raffle.getEntranceFee();
+    interval=await raffle.getInterval();
+    // console.log("Interval i s: ",interval)
   })
 
 
@@ -32,12 +40,43 @@ import { assert, expect } from "chai";// chai is an assertion library
 
     it("Initializes the raffle correctly",async()=>{
       const raffleState=await raffle.getRaffleState();     
-      const interval = await raffle.getInterval();
-
+      const entranceFee = await raffle.getEntranceFee();
+      assert.equal(entranceFee.toString(),networkConfig[network.name]["raffleEntranceFee"]);
       assert.equal(interval.toString(),networkConfig[network.name]["keepersUpdateInterval"].toString());
       assert.equal(raffleState,0);
 
     })
+  })
+
+
+  describe("enterRaffle",async()=>{
+
+    it("it should return Custom Error if the amount is less than enterFree",async()=>{
+      await expect(raffle.enterRaffle()).to.be.revertedWithCustomError(raffle,"Raffle__NotEnoughEtherEnetered");
+    });
+
+    it("it should record players when they enter",async()=>{
+      await raffle.enterRaffle({value:raffleEntranceFee});
+      const playerFromContract=await raffle.getPlayer(0);
+      assert.equal(deployer.address,playerFromContract);
+    });
+
+    it("it should emit an event when player entrance a Free",async()=>{
+      await expect(raffle.enterRaffle({value:raffleEntranceFee})).to.emit(raffle,"RaffleEnter").withArgs(deployer.address);
+    })
+
+    // testing the case when raffle is calculating...
+    it("it should revert Error when Lottery is not Open",async()=>{
+      await raffle.enterRaffle({value:raffleEntranceFee});
+      await network.provider.send("evm_increaseTime", [interval.toNumber()+1]);// increase hardhat block time by "interval + 1"
+      await network.provider.send("evm_mine",[]);// tell hardhat to mine block
+      // by increasing the time and mining a block,  we just need to call performUpKee 
+      //to simulate the case when raffle is calculating... according to our contract
+      await raffle.performUpkeep([]);
+      await expect(raffle.enterRaffle({value:raffleEntranceFee})).to.be.revertedWithCustomError(raffle,"Raffle__RaffleNotOpen");
+      
+    })
+
   })
 
 

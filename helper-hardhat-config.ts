@@ -22,7 +22,7 @@ export interface networkConfigItem  {
   export const networkConfig: networkConfigInfo = {
     localhost: {},
     hardhat: {
-      raffleEntranceFee: "100000000",
+      raffleEntranceFee: ethers.utils.parseEther("0.1").toString(),
       // gasLane : hardhat doesn't care about what gasLane we're working on, because we're going to be mocking the gasLane anyways
       gasLane:"0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15",
       callbackGasLimit:"100000",
@@ -42,7 +42,7 @@ export interface networkConfigItem  {
     goerli: {
       blockConfirmations: 6,
       vrfCoordinatorV2:"0x2Ca8E0C643bDe4C2E08ab1fA0da3401AdAD7734D",
-      raffleEntranceFee:"100000000",
+      raffleEntranceFee:ethers.utils.parseEther("0.1").toString(),
       gasLane:"0x79d3d8832d904592c0bf9818b621522c988bb8b0c05cdc3b15aea1b6e8db0c15",
       subscriptionId:"0",
       callbackGasLimit:"100000",

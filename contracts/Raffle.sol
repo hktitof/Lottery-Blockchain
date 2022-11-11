@@ -187,7 +187,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
 
     /* View & Pure Functions*/
 
-    function getEntranceFree() external view returns (uint256) {
+    function getEntranceFee() external view returns (uint256) {
         return i_entranceFee;
     }
 
@@ -222,4 +222,8 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
     function getInterval() public view returns (uint256) {
         return i_interval;
     }
+    function getSubscriptionId() public view returns (uint64) {
+        return i_subscriptionId;
+    }
+   
 }
