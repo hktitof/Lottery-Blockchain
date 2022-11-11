@@ -100,10 +100,18 @@ import { assert, expect } from "chai"; // chai is an assertion library
 
         it("return false if enough time hasn't passed",async()=>{
           await raffle.enterRaffle({ value: raffleEntranceFee });
-          // await network.provider.send("evm_increaseTime", [-interval.toNumber() ]); // increase hardhat block time by "interval - 1"
-          await network.provider.send("evm_mine", []); // tell hardhat to mine block
+          await network.provider.send("evm_increaseTime", [interval.toNumber()-(interval.toNumber()-1) ]); // increase hardhat block time by "30 - (30-1) = 29 < 30"
+          await network.provider.request({method:"evm_mine",params:[]}); // tell hardhat to mine block
           const [upkeepNeeded] = await raffle.callStatic.checkUpkeep("0x"); // simulate the call to checkUpkeep using callStatic and get upkeepNeeded from the return array
           assert.equal(upkeepNeeded, false);
+        });
+
+        it("return true if enough time has passed, has players, eth, and is open",async()=>{
+          await raffle.enterRaffle({ value: raffleEntranceFee });
+          await network.provider.send("evm_increaseTime", [interval.toNumber() + 1]); // increase hardhat block time by "interval + 1"
+          await network.provider.send("evm_mine", []); // tell hardhat to mine block
+          const [upkeepNeeded] = await raffle.callStatic.checkUpkeep("0x"); // simulate the call to checkUpkeep using callStatic and get upkeepNeeded from the return array
+          assert.equal(upkeepNeeded, true);
         });
 
       });
