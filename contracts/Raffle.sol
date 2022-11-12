@@ -61,7 +61,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
 
     /*Events*/
     event RaffleEnter(address indexed player); // track who entered the raffle
-    event ReqeustedRaffleWinner(uint256 indexed requestId); // track Raffle winner requester
+    event RequestedRaffleWinner(uint256 indexed requestId); // track Raffle winner requester
     event RaffleWinnerSelected(address indexed winner); // track Winner List
 
     /*Function*/
@@ -159,7 +159,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatible {
             i_callBackGasLimit,
             NUM_WORDS
         );
-        emit ReqeustedRaffleWinner(requestId);
+        emit RequestedRaffleWinner(requestId);
     }
 
     function fulfillRandomWords(
