@@ -1,18 +1,17 @@
 import { deployments, ethers, getNamedAccounts, network } from "hardhat";
 
 import { BigNumber } from "ethers";
-import { id } from "ethers/lib/utils";
 
 // @dev-chains : import
-import { developmentChains, networkConfig } from "./../../helper-hardhat-config";
-import { Raffle } from "./../../typechain-types";
-import { VRFCoordinatorV2Mock } from "./../../typechain-types/contracts/testMocks/VRFCoordinatorV2Mock";
+import { developmentChains, networkConfig } from "../../helper-hardhat-config";
+import { Raffle } from "../../typechain-types";
+import { VRFCoordinatorV2Mock } from "../../typechain-types/contracts/testMocks/VRFCoordinatorV2Mock";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { assert, expect } from "chai"; // chai is an assertion library
 
 !developmentChains.includes(network.name)
   ? describe.skip
-  : describe("Raffle", () => {
+  : describe("Raffle Unit Tests", () => {
       let raffle: Raffle;
       let vrfCoordinatorV2Mock: VRFCoordinatorV2Mock;
       let raffleEntranceFee;
@@ -202,16 +201,18 @@ import { assert, expect } from "chai"; // chai is an assertion library
                 const numPlayers = await raffle.getNumPlayers();
                 const contractBalance = await ethers.provider.getBalance(raffle.address);
                 const winnerEndingBalance = await ethers.provider.getBalance(recentWinnerAddress);
-                assert.equal(winnerEndingBalance.toString(),
-                winnerStartingBalance.add(raffleEntranceFee.mul(additionalEntrants).add(raffleEntranceFee)).toString());
-                assert.equal(numPlayers, 0);
+                assert.equal(
+                  winnerEndingBalance.toString(),
+                  winnerStartingBalance.add(raffleEntranceFee.mul(additionalEntrants).add(raffleEntranceFee)).toString()
+                );
+                assert.equal(numPlayers.toString(), "0");
                 assert.equal(contractBalance.toString(), "0");
                 assert.equal(raffleState, 0);
-                assert(endingTimeStamp> startingTimeStamp);
+                assert(endingTimeStamp > startingTimeStamp);
+                resolve();
               } catch (e) {
                 reject(e);
               }
-              resolve();
             });
             // we'll need to call performUpkeep, here so we can make sure that listener is set up before we call fulfillRandomWords
             // Setting up the listener

@@ -13,11 +13,10 @@ const deployRaffle: DeployFunction = async function (hre: HardhatRuntimeEnvironm
   const { deployer } = await getNamedAccounts();
   let vrfCoordinatorV2Mock;
 
-
   const chainId: number = network.config.chainId!;
   const VRF_SUB_FUND_AMOUNT = "1000000000000000000000";
 
-  let vrfCoordinatorV2Address: string | undefined, subscriptionId: string | undefined
+  let vrfCoordinatorV2Address: string | undefined, subscriptionId: string | undefined;
 
   if (developmentChains.includes(network.name)) {
     vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock"); // get the most recently deployed "VRFCoordinatorV2Mock" contract
@@ -29,8 +28,8 @@ const deployRaffle: DeployFunction = async function (hre: HardhatRuntimeEnvironm
     // usually, we don't need the link token on a real network
     await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, VRF_SUB_FUND_AMOUNT);
   } else {
-    vrfCoordinatorV2Address = networkConfig[chainId]["vrfCoordinatorV2"];
-    subscriptionId = networkConfig[chainId]["subscriptionId"];
+    vrfCoordinatorV2Address = networkConfig[network.name]["vrfCoordinatorV2"];
+    subscriptionId = networkConfig[network.name]["subscriptionId"];
   }
 
   const args = [
@@ -51,7 +50,10 @@ const deployRaffle: DeployFunction = async function (hre: HardhatRuntimeEnvironm
     // we need to wait if on a live network so we can verify properly, on test networks we set up 6 blocks
     waitConfirmations: networkConfig[network.name].blockConfirmations || 1,
   });
-  await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
+
+  if (developmentChains.includes(network.name)) {
+    await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
+  }
 
   log(`Successfully deployed "Raffle" contract at ${raffle.address}`);
   if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
@@ -60,4 +62,4 @@ const deployRaffle: DeployFunction = async function (hre: HardhatRuntimeEnvironm
   log("----------------------------------------------------");
 };
 export default deployRaffle;
-deployRaffle.tags = ["all","Raffle"];
+deployRaffle.tags = ["all", "Raffle"];
