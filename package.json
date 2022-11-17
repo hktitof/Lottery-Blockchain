@@ -12,10 +12,15 @@
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.4",
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@types/mocha": "^10.0.0",
+    "@walletconnect/web3-provider": "^1.8.0",
+    "@web3auth/web3auth": "^2.1.3",
     "hardhat-shorthand": "^1.0.0",
+    "magic-sdk": "^10.0.0",
+    "moralis-v1": "^1.12.0",
     "next": "13.0.2",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-moralis": "^1.4.2",
     "tailwind-scrollbar": "^2.0.1"
   },
   "devDependencies": {

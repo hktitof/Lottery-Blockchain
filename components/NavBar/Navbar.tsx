@@ -65,7 +65,6 @@ export default function NavBar() {
               <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                 <li className="text-white hover:text-indigo-200">
                   <a
-                    href="javascript:void(0)"
                     className="px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200"
                   >
                     Connect
@@ -77,7 +76,6 @@ export default function NavBar() {
         </div>
         <div className="hidden space-x-2 md:inline-block">
           <a
-            href="javascript:void(0)"
             className="px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200"
           >
             Connect
