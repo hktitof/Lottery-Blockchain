@@ -1,7 +1,12 @@
 import { useState } from "react";
 
-export default function NavBar() {
+
+export default function NavBar(props:{enableWeb3:()=>void, account:string}) {
   const [navbar, setNavbar] = useState(false);
+
+  const clickOnConnect = async () => {
+    await props.enableWeb3();
+  };
 
   return (
     <nav className="w-full bg-purple-800 shadow">
@@ -9,16 +14,16 @@ export default function NavBar() {
         <div>
           <div className="flex items-center justify-between py-3 md:py-5 md:block ">
             <div className="flex flex-row items-center space-x-1">
-                <div className="h-8 w-8">
+              <div className="h-8 w-8">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fill="#F2F4F8"
-                  d="M30.3,-29.4C43.5,-25,61.3,-19.5,66.7,-8.8C72.2,2,65.4,17.9,55.9,30.4C46.5,42.9,34.4,52.1,19.9,59.5C5.4,67,-11.6,72.7,-20.1,65.2C-28.5,57.8,-28.5,37.1,-31.1,22.8C-33.6,8.4,-38.7,0.3,-44.3,-14.8C-49.9,-29.8,-56,-52,-48.8,-57.4C-41.5,-62.7,-20.7,-51.4,-6.1,-44.1C8.6,-36.8,17.1,-33.7,30.3,-29.4Z"
-                  transform="translate(100 100)"
-                />
-              </svg>
-                </div>
-             
+                  <path
+                    fill="#F2F4F8"
+                    d="M30.3,-29.4C43.5,-25,61.3,-19.5,66.7,-8.8C72.2,2,65.4,17.9,55.9,30.4C46.5,42.9,34.4,52.1,19.9,59.5C5.4,67,-11.6,72.7,-20.1,65.2C-28.5,57.8,-28.5,37.1,-31.1,22.8C-33.6,8.4,-38.7,0.3,-44.3,-14.8C-49.9,-29.8,-56,-52,-48.8,-57.4C-41.5,-62.7,-20.7,-51.4,-6.1,-44.1C8.6,-36.8,17.1,-33.7,30.3,-29.4Z"
+                    transform="translate(100 100)"
+                  />
+                </svg>
+              </div>
+
               <h2 className="text-2xl font-bold text-white">Lottery</h2>
             </div>
             <div className="md:hidden">
@@ -64,22 +69,30 @@ export default function NavBar() {
             >
               <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                 <li className="text-white hover:text-indigo-200">
-                  <a
-                    className="px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200"
-                  >
+                  <button className="px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200">
                     Connect
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
           )}
         </div>
         <div className="hidden space-x-2 md:inline-block">
-          <a
-            className="px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200"
-          >
-            Connect
-          </a>
+          {props.account ? (
+            <button
+              onClick={()=>{}}
+              className="px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200"
+            >
+              Disconnect
+            </button>
+          ) : (
+            <button
+              onClick={clickOnConnect}
+              className="px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200"
+            >
+              Connect to wallet
+            </button>
+          )}
         </div>
       </div>
     </nav>

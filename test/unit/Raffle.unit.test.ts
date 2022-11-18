@@ -190,7 +190,7 @@ import { assert, expect } from "chai"; // chai is an assertion library
               console.log("found the event");
               try {
                 const recentWinnerAddress = await raffle.getRecentWinner();
-                console.log("Recent Winner", recentWinnerAddress);
+                // console.log("Recent Winner", recentWinnerAddress);
                 console.log("accounts : ");
                 console.log("accounts[0]", accounts[0].address);
                 console.log("accounts[1]", accounts[1].address);
