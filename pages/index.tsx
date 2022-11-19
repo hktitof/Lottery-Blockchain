@@ -18,9 +18,6 @@ export default function Home() {
   const [notifyChangedAccount, setNotifyChangedAccount] = useState<Boolean>(false);
   const [walletIsDisconnected, setWalletIsDisconnected] = useState<Boolean>(false);
 
-  // TODO : fix connect to wallet by implementing connect button conditions
-
-  // useEffects
 
   //toast for connected wallet verfiication
   useEffect(() => {
@@ -104,31 +101,6 @@ export default function Home() {
 
           // Default options for specific types
           success: {
-            duration: 3000,
-            theme: {
-              primary: "green",
-              secondary: "black",
-            },
-          },
-        }}
-      />
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-        gutter={24}
-        containerClassName=""
-        containerStyle={{}}
-        toastOptions={{
-          // Define default options
-          className: "",
-          duration: 3000,
-          style: {
-            background: "#fff",
-            color: "#000",
-          },
-
-          // Default options for specific types
-          error: {
             duration: 3000,
             theme: {
               primary: "green",
