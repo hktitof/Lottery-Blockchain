@@ -3,21 +3,15 @@ import { Dispatch, SetStateAction, useState } from "react";
 export default function NavBar(props: {
   enableWeb3: () => void;
   account: string;
-  setConnectedFirstTime: Dispatch<SetStateAction<boolean>>,
   isWeb3Enabled: boolean;
+  deactivateWeb3: () => Promise<void>;
 }) {
   const [navbar, setNavbar] = useState(false);
 
   const clickOnConnect = async () => {
-    try {
-      await props.enableWeb3();
-      if(!props.isWeb3Enabled) {
-        console.log("please connect your wallet")
-        // props.setConnectedFirstTime(true);
-      };
-    } catch (error) {
-      console.log("catch error : ", error.code);
-    }
+    await props.enableWeb3();
+    // add variable to local storage
+    if(typeof localStorage !== 'undefined') localStorage.setItem("connected", "true");
   };
 
   return (
@@ -88,7 +82,9 @@ export default function NavBar(props: {
         <div className="hidden space-x-2 md:inline-block">
           {props.account ? (
             <button
-              onClick={async () => {}}
+              onClick={async () => {
+                
+              }}
               className="flex flex-row items-center space-x-2 px-4 py-2 text-black bg-gray-200 rounded-md shadow hover:bg-gray-100 hover:ease-out transition duration-200"
             >
               <svg
