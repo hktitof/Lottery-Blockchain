@@ -84,6 +84,7 @@ export default function Home() {
   if (account) console.log("connected account : ", account.slice(0, 6) + "..." + account.slice(-4));
   return (
     <div className="h-screen w-full">
+      <NavBar enableWeb3={enableWeb3} account={account} isWeb3Enabled={isWeb3Enabled} deactivateWeb3={deactivateWeb3} />
       <Toaster
         position="top-center"
         reverseOrder={false}
@@ -109,7 +110,6 @@ export default function Home() {
           },
         }}
       />
-      <NavBar enableWeb3={enableWeb3} account={account} isWeb3Enabled={isWeb3Enabled} deactivateWeb3={deactivateWeb3} />
     </div>
   );
 }
